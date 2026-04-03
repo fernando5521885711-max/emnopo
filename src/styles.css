@@ -1,0 +1,15 @@
+@import "tailwindcss" source("../");
+
+body {
+  @apply m-0;
+  font-family: 'VT323', monospace;
+  background: #0a1628;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
