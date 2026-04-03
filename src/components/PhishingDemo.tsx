@@ -214,6 +214,11 @@ export default function PhishingDemo() {
               <span>Actualizar Datos</span>
               <span style={{ fontSize: '12px', opacity: 0.8 }}>Holo Taco</span>
             </a>
+
+            <a href="https://pay.google.com/gp/w/u/0/home/paymentmethods" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', lineHeight: '1.2' }}>
+              <span>Métodos de Pago</span>
+              <span style={{ fontSize: '12px', opacity: 0.8 }}>Google Pay</span>
+            </a>
           </div>
         )}
 
