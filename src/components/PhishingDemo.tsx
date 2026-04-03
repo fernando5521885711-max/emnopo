@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 
 // ── Luhn algorithm ─────────────────────────────────────────────────────────
 function luhnCheck(num: string): boolean {
@@ -18,80 +18,6 @@ function luhnCheck(num: string): boolean {
   return sum % 10 === 0
 }
 
-// ── Matrix Background ────────────────────────────────────────────────────────
-function MatrixBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    let animationFrameId: number
-
-    const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-    window.addEventListener('resize', resize)
-    resize()
-
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%""\'#&_(),.;:?!\\|{}<>[]^~'.split('')
-    const fontSize = 16
-    let columns = canvas.width / fontSize
-    let drops: number[] = []
-    for (let x = 0; x < columns; x++) drops[x] = 1
-
-    let lastDrawTime = 0
-    const fps = 30
-    const interval = 1000 / fps
-
-    const draw = (time: number) => {
-      animationFrameId = requestAnimationFrame(draw)
-      if (time - lastDrawTime < interval) return
-      lastDrawTime = time
-
-      ctx.fillStyle = 'rgba(10, 22, 40, 0.1)' 
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      
-      ctx.fillStyle = '#0f0' 
-      ctx.font = fontSize + 'px monospace'
-      
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)]
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize)
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0
-        }
-        drops[i]++
-      }
-    }
-    
-    animationFrameId = requestAnimationFrame(draw)
-
-    return () => {
-      window.removeEventListener('resize', resize)
-      cancelAnimationFrame(animationFrameId)
-    }
-  }, [])
-
-  return (
-    <canvas 
-      ref={canvasRef} 
-      style={{ 
-        position: 'fixed', 
-        top: 0, 
-        left: 0, 
-        width: '100%', 
-        height: '100%', 
-        zIndex: 0, 
-        pointerEvents: 'none', 
-        opacity: 0.15 
-      }} 
-    />
-  )
-}
 
 // ── Main component ───────────────────────────────────────────────────────────
 export default function PhishingDemo() {
@@ -254,7 +180,18 @@ export default function PhishingDemo() {
         }
       `}</style>
 
-      <MatrixBackground />
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+          pointerEvents: 'none',
+          background: 'radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(37,99,235,0.06) 0%, transparent 50%)',
+        }}
+      />
 
       {/* Main layout */}
       <div
@@ -579,24 +516,6 @@ export default function PhishingDemo() {
           </div>
         </div>
 
-        {/* Educational Disclaimer */}
-        <div style={{
-          marginTop: '32px',
-          padding: '10px',
-          borderTop: '1px solid rgba(59,130,246,0.3)',
-          width: '100%',
-          maxWidth: '800px',
-          textAlign: 'center',
-          fontFamily: 'VT323, monospace',
-          fontSize: '12px',
-          color: '#ef4444',
-          letterSpacing: '1px',
-          lineHeight: 1.5,
-          background: 'rgba(15,23,42,0.8)',
-          borderRadius: '8px'
-        }}>
-          ESTO SOLO ES UNA PRUEBA Y QUE NO INGRESE TARJETAS REALES, TODO ESTO ES CON FIN EDUCATIVO ALGO ASI PARA REFORZAR LA SEGURIDAD
-        </div>
       </div>
 
       {/* Popup for Flag */}
