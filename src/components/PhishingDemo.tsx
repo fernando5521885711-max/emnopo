@@ -73,9 +73,6 @@ export default function PhishingDemo() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const cardDisplay = cardNumber || '#### #### #### ####'
-  const expiryDisplay = expiry || 'MM/YY'
-
   return (
     <>
       <style>{`
@@ -206,237 +203,142 @@ export default function PhishingDemo() {
           padding: '40px 20px',
         }}
       >
-        {/* Action Buttons */}
-        <div style={{ width: '100%', maxWidth: '300px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
-          <button className="action-btn" onClick={() => setShowFlagPopup(true)}>
-            VER FLAG AUTOFILL
-          </button>
-          
-          <a href="https://www.holotaco.com/checkouts/cn/hWNAbOrZethJm70DRck3Xwe1/en-us?_r=AQABgThlwIICEkbROjpoxZzfrKivn4iAyQTmPq_VdXHLy70" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', lineHeight: '1.2' }}>
-            <span>Actualizar Datos</span>
-            <span style={{ fontSize: '12px', opacity: 0.8 }}>Holo Taco</span>
-          </a>
-        </div>
+        {/* Action Buttons - hidden when submitted */}
+        {!submitted && (
+          <div style={{ width: '100%', maxWidth: '300px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
+            <button className="action-btn" onClick={() => setShowFlagPopup(true)}>
+              VER FLAG AUTOFILL
+            </button>
 
+            <a href="https://www.holotaco.com/checkouts/cn/hWNAbOrZethJm70DRck3Xwe1/en-us?_r=AQABgThlwIICEkbROjpoxZzfrKivn4iAyQTmPq_VdXHLy70" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', lineHeight: '1.2' }}>
+              <span>Actualizar Datos</span>
+              <span style={{ fontSize: '12px', opacity: 0.8 }}>Holo Taco</span>
+            </a>
+          </div>
+        )}
+
+        {/* Form panel */}
         <div
           style={{
-            display: 'flex',
-            gap: '32px',
-            alignItems: 'flex-start',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
             width: '100%',
-            maxWidth: '780px',
-            marginBottom: '40px',
+            maxWidth: submitted ? '500px' : '380px',
+            background: 'rgba(15,23,42,0.9)',
+            border: '1px solid rgba(59,130,246,0.25)',
+            borderRadius: '14px',
+            padding: submitted ? '48px 36px' : '28px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+            transition: 'all 0.3s ease',
           }}
         >
-          {/* Card visual */}
-          <div style={{ flexShrink: 0 }}>
-            <div
-              style={{
-                width: '340px',
-                height: '200px',
-                borderRadius: '14px',
-                border: '1px solid rgba(59,130,246,0.3)',
-                boxShadow: '0 8px 32px rgba(59,130,246,0.15)',
-                position: 'relative',
-                overflow: 'hidden',
-                background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)',
-              }}
-            >
-              {/* Card overlay content */}
+          {submitted ? (
+            <div style={{ textAlign: 'center', animation: 'fadeIn 0.4s ease', padding: '30px 0' }}>
+              {/* Blue circle with checkmark */}
               <div
                 style={{
-                  position: 'absolute',
-                  inset: 0,
-                  padding: '18px 22px',
+                  width: '120px',
+                  height: '120px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
                   display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 28px',
+                  boxShadow: '0 4px 20px rgba(59,130,246,0.4)',
+                  animation: 'checkPop 0.5s ease forwards',
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div
-                    style={{
-                      fontFamily: 'VT323, monospace',
-                      fontSize: '18px',
-                      color: '#60a5fa',
-                      letterSpacing: '3px',
-                    }}
-                  >
-                    CMP
-                  </div>
-                  <div
-                    style={{
-                      width: '38px',
-                      height: '28px',
-                      background: 'linear-gradient(135deg, rgba(96,165,250,0.7), rgba(37,99,235,0.5))',
-                      borderRadius: '4px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '10px',
-                      fontFamily: 'VT323, monospace',
-                      color: '#fff',
-                      letterSpacing: '1px',
-                    }}
-                  >
-                    CHIP
-                  </div>
-                </div>
-
-                <div>
-                  <div
-                    style={{
-                      fontFamily: 'VT323, monospace',
-                      fontSize: '22px',
-                      color: '#fff',
-                      letterSpacing: '3px',
-                      textShadow: '0 1px 3px rgba(0,0,0,0.5)',
-                      marginBottom: '10px',
-                    }}
-                  >
-                    {cardDisplay}
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-                    <div style={{ textAlign: 'right' }}>
-                      <div
-                        style={{
-                          fontFamily: 'VT323, monospace',
-                          fontSize: '10px',
-                          color: 'rgba(255,255,255,0.5)',
-                          letterSpacing: '2px',
-                          marginBottom: '2px',
-                        }}
-                      >
-                        EXPIRES
-                      </div>
-                      <div
-                        style={{
-                          fontFamily: 'VT323, monospace',
-                          fontSize: '17px',
-                          color: '#fff',
-                          letterSpacing: '2px',
-                        }}
-                      >
-                        {expiryDisplay}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <svg
+                  width="60"
+                  height="60"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#fff"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
               </div>
-            </div>
-
-            {/* Luhn indicator */}
-            {luhnValid !== null && (
               <div
                 style={{
                   fontFamily: 'VT323, monospace',
-                  fontSize: '14px',
-                  letterSpacing: '2px',
-                  marginTop: '8px',
-                  textAlign: 'center',
-                  color: luhnValid ? '#22c55e' : '#ef4444',
+                  fontSize: '42px',
+                  color: '#3b82f6',
+                  letterSpacing: '8px',
+                  marginBottom: '36px',
                 }}
               >
-                {luhnValid ? '✓ LUHN VALID' : '✗ LUHN INVALID'}
+                DONE
               </div>
-            )}
-          </div>
+              <button
+                className="submit-btn"
+                style={{ fontSize: '26px', padding: '18px' }}
+                onClick={() => {
+                  setSubmitted(false)
+                  setCardNumber('')
+                  setExpiry('')
+                  setCvv('')
+                  setLuhnValid(null)
+                  setExpiryError('')
+                }}
+              >
+                REGRESAR
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div
+                style={{
+                  fontFamily: 'VT323, monospace',
+                  fontSize: '22px',
+                  color: '#60a5fa',
+                  letterSpacing: '4px',
+                  marginBottom: '24px',
+                }}
+              >
+                ASOCIAR TU TARJETA
+              </div>
 
-          {/* Form panel */}
-          <div
-            style={{
-              flex: 1,
-              minWidth: '280px',
-              background: 'rgba(15,23,42,0.9)',
-              border: '1px solid rgba(59,130,246,0.25)',
-              borderRadius: '14px',
-              padding: '28px',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-            }}
-          >
-            {submitted ? (
-              <div style={{ textAlign: 'center', animation: 'fadeIn 0.4s ease', padding: '20px 0' }}>
-                {/* Blue circle with checkmark */}
-                <div
-                  style={{
-                    width: '90px',
-                    height: '90px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 20px',
-                    boxShadow: '0 4px 20px rgba(59,130,246,0.4)',
-                    animation: 'checkPop 0.5s ease forwards',
-                  }}
-                >
-                  <svg
-                    width="44"
-                    height="44"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#fff"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              <div style={{ marginBottom: '16px' }}>
+                <label className="field-label">CARD NUMBER</label>
+                <input
+                  className="field-input"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="#### #### #### ####"
+                  value={cardNumber}
+                  onChange={e => formatCardNumber(e.target.value)}
+                  maxLength={19}
+                />
+                {luhnValid === false && (
+                  <div
+                    style={{
+                      fontFamily: 'VT323, monospace',
+                      fontSize: '13px',
+                      color: '#ef4444',
+                      marginTop: '4px',
+                      letterSpacing: '1px',
+                    }}
                   >
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </div>
-                <div
-                  style={{
-                    fontFamily: 'VT323, monospace',
-                    fontSize: '32px',
-                    color: '#3b82f6',
-                    letterSpacing: '6px',
-                    marginBottom: '28px',
-                  }}
-                >
-                  DONE
-                </div>
-                <button
-                  className="submit-btn"
-                  onClick={() => {
-                    setSubmitted(false)
-                    setCardNumber('')
-                    setExpiry('')
-                    setCvv('')
-                    setLuhnValid(null)
-                    setExpiryError('')
-                  }}
-                >
-                  REGRESAR
-                </button>
+                    INVALID CARD NUMBER
+                  </div>
+                )}
               </div>
-            ) : (
-              <form onSubmit={handleSubmit}>
-                <div
-                  style={{
-                    fontFamily: 'VT323, monospace',
-                    fontSize: '22px',
-                    color: '#60a5fa',
-                    letterSpacing: '4px',
-                    marginBottom: '24px',
-                  }}
-                >
-                  ASOCIAR TU TARJETA
-                </div>
 
-                <div style={{ marginBottom: '16px' }}>
-                  <label className="field-label">CARD NUMBER</label>
+              <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
+                <div style={{ flex: 1 }}>
+                  <label className="field-label">EXPIRY DATE</label>
                   <input
                     className="field-input"
                     type="text"
                     inputMode="numeric"
-                    placeholder="#### #### #### ####"
-                    value={cardNumber}
-                    onChange={e => formatCardNumber(e.target.value)}
-                    maxLength={19}
+                    placeholder="MM/YY"
+                    value={expiry}
+                    onChange={e => formatExpiry(e.target.value)}
+                    maxLength={5}
                   />
-                  {luhnValid === false && (
+                  {expiryError && (
                     <div
                       style={{
                         fontFamily: 'VT323, monospace',
@@ -446,74 +348,46 @@ export default function PhishingDemo() {
                         letterSpacing: '1px',
                       }}
                     >
-                      INVALID CARD NUMBER
+                      {expiryError}
                     </div>
                   )}
                 </div>
-
-                <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
-                  <div style={{ flex: 1 }}>
-                    <label className="field-label">EXPIRY DATE</label>
-                    <input
-                      className="field-input"
-                      type="text"
-                      inputMode="numeric"
-                      placeholder="MM/YY"
-                      value={expiry}
-                      onChange={e => formatExpiry(e.target.value)}
-                      maxLength={5}
-                    />
-                    {expiryError && (
-                      <div
-                        style={{
-                          fontFamily: 'VT323, monospace',
-                          fontSize: '13px',
-                          color: '#ef4444',
-                          marginTop: '4px',
-                          letterSpacing: '1px',
-                        }}
-                      >
-                        {expiryError}
-                      </div>
-                    )}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <label className="field-label">CVV</label>
-                    <input
-                      className="field-input"
-                      type="text"
-                      inputMode="numeric"
-                      placeholder="•••"
-                      value={cvv}
-                      onChange={e => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                      maxLength={4}
-                    />
-                  </div>
+                <div style={{ flex: 1 }}>
+                  <label className="field-label">CVV</label>
+                  <input
+                    className="field-input"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="•••"
+                    value={cvv}
+                    onChange={e => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                    maxLength={4}
+                  />
                 </div>
+              </div>
 
-                <button
-                  type="submit"
-                  className="submit-btn"
-                >
-                  ASOCIAR TARJETA
-                </button>
+              <button
+                type="submit"
+                className="submit-btn"
+              >
+                ASOCIAR TARJETA
+              </button>
 
-                <div
-                  style={{
-                    fontFamily: 'VT323, monospace',
-                    fontSize: '12px',
-                    color: 'rgba(59,130,246,0.3)',
-                    letterSpacing: '1px',
-                    marginTop: '14px',
-                    textAlign: 'center',
-                    lineHeight: 1.5,
-                  }}
-                >
-                  256-BIT ENCRYPTED · SECURE NETWORK
-                </div>
-              </form>
-            )}
-          </div>
+              <div
+                style={{
+                  fontFamily: 'VT323, monospace',
+                  fontSize: '12px',
+                  color: 'rgba(59,130,246,0.3)',
+                  letterSpacing: '1px',
+                  marginTop: '14px',
+                  textAlign: 'center',
+                  lineHeight: 1.5,
+                }}
+              >
+                256-BIT ENCRYPTED · SECURE NETWORK
+              </div>
+            </form>
+          )}
         </div>
 
       </div>
