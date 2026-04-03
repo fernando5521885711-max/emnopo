@@ -210,9 +210,9 @@ export default function PhishingDemo() {
               VER FLAG AUTOFILL
             </button>
 
-            <a href="https://www.holotaco.com/checkouts/cn/hWNAbOrZethJm70DRck3Xwe1/en-us?_r=AQABgThlwIICEkbROjpoxZzfrKivn4iAyQTmPq_VdXHLy70" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', lineHeight: '1.2' }}>
+            <a href="https://www.beyondpolish.com/checkouts/cn/hWNAbX9yp2hhr233PSN82jLd/en-us?_r=AQAB_YU51kRzDDS1mmcPyxIn9Yspo3i3Vl7Nz4qgZPwZ7iQ&auto_redirect=false&edge_redirect=true&skip_shop_pay=true" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', lineHeight: '1.2' }}>
               <span>Actualizar Datos</span>
-              <span style={{ fontSize: '12px', opacity: 0.8 }}>Holo Taco</span>
+              <span style={{ fontSize: '12px', opacity: 0.8 }}>Beyond</span>
             </a>
 
             <a href="https://pay.google.com/gp/w/u/0/home/paymentmethods" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', lineHeight: '1.2' }}>
