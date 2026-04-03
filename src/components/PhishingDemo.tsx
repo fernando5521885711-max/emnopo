@@ -134,10 +134,10 @@ export default function PhishingDemo() {
         .action-btn {
           width: 100%;
           padding: 8px 12px;
-          background: rgba(15,23,42,0.8);
-          border: 1px solid #3b82f6;
+          background: rgba(37,99,235,0.18);
+          border: 1px solid rgba(96,165,250,0.6);
           border-radius: 8px;
-          color: #60a5fa;
+          color: #93bbfc;
           font-family: 'VT323', monospace;
           font-size: 14px;
           letter-spacing: 2px;
@@ -148,11 +148,13 @@ export default function PhishingDemo() {
           text-decoration: none;
           display: block;
           box-sizing: border-box;
+          box-shadow: 0 0 10px rgba(59,130,246,0.2), inset 0 1px 0 rgba(96,165,250,0.15);
         }
         .action-btn:hover {
-          background: rgba(37,99,235,0.2);
+          background: rgba(37,99,235,0.3);
           color: #fff;
-          border-color: #60a5fa;
+          border-color: #93bbfc;
+          box-shadow: 0 0 16px rgba(59,130,246,0.35), inset 0 1px 0 rgba(96,165,250,0.2);
         }
         .popup {
           position: fixed;
