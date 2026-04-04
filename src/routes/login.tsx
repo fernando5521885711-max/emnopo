@@ -1,8 +1,12 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
-import { login, getUser, handleAuthCallback, acceptInvite, updateUser, AuthError, MissingIdentityError } from '@netlify/identity'
 
 type AuthView = 'login' | 'invite' | 'recovery'
+
+// Dynamically import @netlify/identity only on the client to avoid SSR crashes
+async function getIdentity() {
+  return await import('@netlify/identity')
+}
 
 function LoginPage() {
   const [email, setEmail] = useState('')
@@ -20,8 +24,9 @@ function LoginPage() {
   useEffect(() => {
     async function init() {
       try {
+        const identity = await getIdentity()
         // Handle any auth callbacks (confirmation, recovery, invite, etc.)
-        const result = await handleAuthCallback()
+        const result = await identity.handleAuthCallback()
 
         if (result) {
           switch (result.type) {
@@ -48,7 +53,7 @@ function LoginPage() {
         }
 
         // Check if already logged in
-        const user = await getUser()
+        const user = await identity.getUser()
         if (user) {
           navigate({ to: '/perrito33' })
           return
@@ -66,16 +71,18 @@ function LoginPage() {
     setError('')
     setLoading(true)
     try {
-      await login(email, password)
+      const identity = await getIdentity()
+      await identity.login(email, password)
       navigate({ to: '/perrito33' })
     } catch (err) {
-      if (err instanceof MissingIdentityError) {
+      const identity = await getIdentity()
+      if (err instanceof identity.MissingIdentityError) {
         setError('IDENTITY NO CONFIGURADO')
-      } else if (err instanceof AuthError) {
-        if (err.status === 401) {
+      } else if (err instanceof identity.AuthError) {
+        if ((err as any).status === 401) {
           setError('EMAIL O CONTRASEÑA INCORRECTOS')
         } else {
-          setError(err.message)
+          setError((err as Error).message)
         }
       } else {
         setError('ERROR DE CONEXIÓN')
@@ -98,12 +105,13 @@ function LoginPage() {
     }
     setLoading(true)
     try {
-      await acceptInvite(inviteToken, newPassword)
+      const identity = await getIdentity()
+      await identity.acceptInvite(inviteToken, newPassword)
       setSuccess('CUENTA CREADA. REDIRIGIENDO...')
       setTimeout(() => navigate({ to: '/perrito33' }), 1500)
     } catch (err) {
-      if (err instanceof AuthError) {
-        setError(err.message)
+      if (err && typeof err === 'object' && 'message' in err) {
+        setError((err as Error).message)
       } else {
         setError('ERROR AL ACEPTAR INVITACIÓN')
       }
@@ -125,12 +133,13 @@ function LoginPage() {
     }
     setLoading(true)
     try {
-      await updateUser({ password: newPassword })
+      const identity = await getIdentity()
+      await identity.updateUser({ password: newPassword })
       setSuccess('CONTRASEÑA ACTUALIZADA. REDIRIGIENDO...')
       setTimeout(() => navigate({ to: '/perrito33' }), 1500)
     } catch (err) {
-      if (err instanceof AuthError) {
-        setError(err.message)
+      if (err && typeof err === 'object' && 'message' in err) {
+        setError((err as Error).message)
       } else {
         setError('ERROR AL ACTUALIZAR CONTRASEÑA')
       }

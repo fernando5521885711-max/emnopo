@@ -1,6 +1,10 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
-import { getUser, logout } from '@netlify/identity'
+
+// Dynamically import @netlify/identity only on the client to avoid SSR crashes
+async function getIdentity() {
+  return await import('@netlify/identity')
+}
 
 interface Submission {
   id: string
@@ -20,7 +24,8 @@ function SubmissionsPage() {
 
   useEffect(() => {
     async function checkAuth() {
-      const user = await getUser()
+      const identity = await getIdentity()
+      const user = await identity.getUser()
       if (!user) {
         navigate({ to: '/login' })
         return
@@ -54,7 +59,8 @@ function SubmissionsPage() {
 
   const handleLogout = async () => {
     try {
-      await logout()
+      const identity = await getIdentity()
+      await identity.logout()
     } catch {
       // continue
     }
