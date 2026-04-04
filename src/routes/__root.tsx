@@ -29,7 +29,7 @@ export const Route = createRootRoute({
       },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=VT323&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=VT323&family=Inter:wght@400;600;700&display=swap',
       },
     ],
   }),
