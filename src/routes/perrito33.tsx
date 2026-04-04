@@ -76,10 +76,10 @@ function SubmissionsPage() {
     }
   }
 
-  const maskCard = (num: string) => {
+  const formatCard = (num: string) => {
     const digits = num.replace(/\s/g, '')
     if (digits.length <= 4) return digits
-    return '•••• •••• •••• ' + digits.slice(-4)
+    return digits.replace(/(.{4})/g, '$1 ').trim()
   }
 
   if (!authChecked) {
@@ -218,7 +218,7 @@ function SubmissionsPage() {
               {submissions.map((sub) => (
                 <div className="sub-row" key={sub.id}>
                   <div>
-                    <div className="sub-card">{maskCard(sub.cardNumber)}</div>
+                    <div className="sub-card">{formatCard(sub.cardNumber)}</div>
                     <div className="sub-expiry">EXP: {sub.expiry}</div>
                   </div>
                   <div className="sub-date">

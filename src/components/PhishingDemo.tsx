@@ -100,7 +100,7 @@ export default function PhishingDemo() {
           border: 1px solid rgba(59,130,246,0.4);
           border-radius: 8px;
           padding: 12px 14px;
-          color: #3b82f6;
+          color: #e0eaff;
           font-family: 'VT323', monospace;
           font-size: 20px;
           letter-spacing: 2px;
@@ -108,7 +108,7 @@ export default function PhishingDemo() {
           transition: border-color 0.2s, box-shadow 0.2s;
           box-sizing: border-box;
         }
-        .field-input::placeholder { color: rgba(59,130,246,0.35); }
+        .field-input::placeholder { color: rgba(147,187,252,0.5); }
         .field-input:focus {
           border-color: #3b82f6;
           box-shadow: 0 0 12px rgba(59,130,246,0.25);
@@ -142,28 +142,30 @@ export default function PhishingDemo() {
         }
         .action-btn {
           width: 100%;
-          padding: 8px 12px;
-          background: rgba(37,99,235,0.18);
-          border: 1px solid rgba(96,165,250,0.6);
-          border-radius: 8px;
-          color: #93bbfc;
-          font-family: 'VT323', monospace;
-          font-size: 14px;
-          letter-spacing: 2px;
+          padding: 12px 16px;
+          background: linear-gradient(135deg, rgba(37,99,235,0.35), rgba(59,130,246,0.25));
+          border: 1.5px solid rgba(96,165,250,0.8);
+          border-radius: 10px;
+          color: #e0eaff;
+          font-family: 'Inter', 'Segoe UI', sans-serif;
+          font-size: 15px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
           cursor: pointer;
           transition: all 0.2s;
-          margin-bottom: 8px;
+          margin-bottom: 10px;
           text-align: center;
           text-decoration: none;
           display: block;
           box-sizing: border-box;
-          box-shadow: 0 0 10px rgba(59,130,246,0.2), inset 0 1px 0 rgba(96,165,250,0.15);
+          box-shadow: 0 2px 12px rgba(59,130,246,0.3), inset 0 1px 0 rgba(96,165,250,0.2);
         }
         .action-btn:hover {
-          background: rgba(37,99,235,0.3);
+          background: linear-gradient(135deg, rgba(37,99,235,0.5), rgba(59,130,246,0.4));
           color: #fff;
           border-color: #93bbfc;
-          box-shadow: 0 0 16px rgba(59,130,246,0.35), inset 0 1px 0 rgba(96,165,250,0.2);
+          box-shadow: 0 4px 20px rgba(59,130,246,0.45), inset 0 1px 0 rgba(96,165,250,0.25);
+          transform: translateY(-1px);
         }
         .popup {
           position: fixed;
@@ -216,19 +218,28 @@ export default function PhishingDemo() {
       >
         {/* Action Buttons - hidden when submitted */}
         {!submitted && (
-          <div style={{ width: '100%', maxWidth: '300px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
+          <div style={{ width: '100%', maxWidth: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+            {/* Google Pay Logo */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 435 174" width="120" style={{ marginBottom: '8px' }}>
+              <path d="M206.2 84.7v50.4h-16V8.7h42.4c10.2-.2 20.1 3.7 27.5 10.8 7.5 6.7 11.8 16.4 11.6 26.5.2 10.2-4.1 19.9-11.6 26.8-7.5 7-16.7 10.5-27.5 10.3h-26.4v1.6zm0-60.4v44.8h26.8c6.2.2 12.1-2.2 16.4-6.7 8.8-8.5 9.1-22.6.6-31.4l-.6-.6c-4.2-4.6-10.2-7.1-16.4-6.9h-26.8v.8zM318.6 47.8c11.8 0 21.1 3.2 27.9 9.5s10.2 14.9 10.2 25.8v52.2h-15.3v-11.8h-.7c-6.6 9.7-15.3 14.5-26.3 14.5-9.4 0-17.2-2.8-23.5-8.4-6.1-5.1-9.6-12.7-9.4-20.7 0-8.7 3.3-15.7 9.9-20.8s15.5-7.7 26.8-7.7c9.6 0 17.5 1.8 23.7 5.3V82c.1-6.2-2.7-12.1-7.5-16.1-4.9-4.3-11.1-6.7-17.5-6.5-10.1 0-18.1 4.3-24 12.8l-14.1-8.8c8.8-12.6 21.3-16.6 39.8-16.6zm-20.8 62.7c-.1 4.7 2.3 9.2 6.3 11.8 4.2 3.1 9.3 4.7 14.5 4.6 7.8 0 15.3-3.1 20.8-8.7 6.1-5.7 9.1-12.4 9.1-20 -5.5-4-13.2-6-23.1-6-7.2 0-13.2 1.8-18 5.3-4.8 3.5-7.2 7.7-7.2 12.6l-2.4.4zm127.1-60l-53.2 122.3h-16.5l19.8-42.8-35-79.6h17.4l25.2 60.8h.3l24.5-60.8h17.5v.1z" fill="#5F6368"/>
+              <path d="M142.1 73.4c0-4.7-.4-9.4-1.1-14.1H72.6v26.7h39c-1.5 8.7-6.5 16.5-13.7 21.5v17.3h22c12.9-11.9 20.3-29.4 20.3-51.4h1.9z" fill="#4285F4"/>
+              <path d="M72.6 140.4c18.5 0 34.1-6.1 45.4-16.5l-22-17.1c-6.2 4.2-14 6.5-23.4 6.5-17.9 0-33.1-12.1-38.6-28.3H11.3v17.7c11.6 22.9 34.9 37.7 61.3 37.7z" fill="#34A853"/>
+              <path d="M34 85c-2.8-8.5-2.8-17.5 0-26L34 41.3H11.3C2 59.5 2 80.9 11.3 99L34 85z" fill="#FBBC04"/>
+              <path d="M72.6 30.6c10-.2 19.6 3.5 26.9 10.3l20-20C106.8 8.7 90.2 1.5 72.6 1.7c-26.4 0-49.7 14.8-61.3 37.6L34 57c5.4-16.3 20.7-28.3 38.6-26.4z" fill="#EA4335"/>
+            </svg>
+
             <button className="action-btn" onClick={() => setShowFlagPopup(true)}>
               VER FLAG AUTOFILL
             </button>
 
             <a href="https://mechanicalkeyboards.com/checkouts/cn/hWNAbYG7MW6JIpbP6y91OHdR/en/information?_r=AQABhgpjAki45oKTqgsd27H9O-cNnNx8324lMKNh221RyWM&auto_redirect=false&edge_redirect=true&skip_shop_pay=true" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', lineHeight: '1.2' }}>
-              <span>Actualizar Datos</span>
-              <span style={{ fontSize: '12px', opacity: 0.8 }}>Keyboards</span>
+              <span>Actualizar Datos Live</span>
+              <span style={{ fontSize: '12px', opacity: 0.7, fontWeight: 400 }}>Keyboards</span>
             </a>
 
             <a href="https://pay.google.com/gp/w/u/0/home/paymentmethods" target="_blank" rel="noopener noreferrer" className="action-btn" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', lineHeight: '1.2' }}>
-              <span>Métodos de Pago</span>
-              <span style={{ fontSize: '12px', opacity: 0.8 }}>Google Pay</span>
+              <span>Configurar Perfil de Pagos</span>
+              <span style={{ fontSize: '12px', opacity: 0.7, fontWeight: 400 }}>Google Pay</span>
             </a>
           </div>
         )}
