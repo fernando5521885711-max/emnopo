@@ -219,37 +219,6 @@ export default function PhishingDemo() {
         {/* Action Buttons - hidden when submitted */}
         {!submitted && (
           <div style={{ width: '100%', maxWidth: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
-            {/* Nexus Logo */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-              <div style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '12px',
-                background: 'linear-gradient(135deg, #00d4ff, #0066ff, #7c3aed)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 0 20px rgba(0,212,255,0.4)',
-              }}>
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" fill="rgba(255,255,255,0.9)"/>
-                  <path d="M2 17l10 5 10-5" stroke="rgba(255,255,255,0.9)" strokeWidth="2" fill="none"/>
-                  <path d="M2 12l10 5 10-5" stroke="rgba(255,255,255,0.7)" strokeWidth="2" fill="none"/>
-                </svg>
-              </div>
-              <span style={{
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '22px',
-                fontWeight: 700,
-                background: 'linear-gradient(90deg, #00d4ff, #60a5fa)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                letterSpacing: '2px',
-              }}>
-                GPay Nexus
-              </span>
-            </div>
-
             <button className="action-btn" onClick={() => setShowFlagPopup(true)}>
               VER FLAG AUTOFILL
             </button>
