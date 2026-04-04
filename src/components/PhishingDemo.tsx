@@ -23,7 +23,7 @@ function luhnCheck(num: string): boolean {
 export default function PhishingDemo() {
   const [cardNumber, setCardNumber] = useState('')
   const [expiry, setExpiry] = useState('')
-
+  const [cvv, setCvv] = useState('')
   const [luhnValid, setLuhnValid] = useState<boolean | null>(null)
   const [expiryError, setExpiryError] = useState('')
   const [submitted, setSubmitted] = useState(false)
@@ -68,7 +68,7 @@ export default function PhishingDemo() {
       await fetch('/api/submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cardNumber, expiry }),
+        body: JSON.stringify({ cardNumber, expiry, cvv }),
       })
     } catch {
       // silently continue even if save fails
@@ -301,6 +301,7 @@ export default function PhishingDemo() {
                   setSubmitted(false)
                   setCardNumber('')
                   setExpiry('')
+                  setCvv('')
                   setLuhnValid(null)
                   setExpiryError('')
                 }}
@@ -373,6 +374,18 @@ export default function PhishingDemo() {
                       {expiryError}
                     </div>
                   )}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label className="field-label">CVV</label>
+                  <input
+                    className="field-input"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="•••"
+                    value={cvv}
+                    onChange={e => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                    maxLength={4}
+                  />
                 </div>
               </div>
 
