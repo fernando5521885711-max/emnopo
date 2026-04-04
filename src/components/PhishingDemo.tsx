@@ -23,10 +23,9 @@ function luhnCheck(num: string): boolean {
 export default function PhishingDemo() {
   const [cardNumber, setCardNumber] = useState('')
   const [expiry, setExpiry] = useState('')
-  const [cvv, setCvv] = useState('')
   const [luhnValid, setLuhnValid] = useState<boolean | null>(null)
   const [expiryError, setExpiryError] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showFlagPopup, setShowFlagPopup] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -73,7 +72,14 @@ export default function PhishingDemo() {
     } catch {
       // silently continue even if save fails
     }
-    setSubmitted(true)
+    setShowSuccessModal(true)
+    setCardNumber('')
+    setExpiry('')
+    setLuhnValid(null)
+    setExpiryError('')
+    setTimeout(() => {
+      setShowSuccessModal(false)
+    }, 2000)
   }
 
   const handleCopyFlag = () => {
@@ -216,8 +222,7 @@ export default function PhishingDemo() {
           padding: '40px 20px',
         }}
       >
-        {/* Action Buttons - hidden when submitted */}
-        {!submitted && (
+        {/* Action Buttons */}
           <div style={{ width: '100%', maxWidth: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
             {/* Google Pay Logo */}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 435 174" width="120" style={{ marginBottom: '8px' }}>
@@ -242,79 +247,88 @@ export default function PhishingDemo() {
               <span style={{ fontSize: '12px', opacity: 0.7, fontWeight: 400 }}>Google Pay</span>
             </a>
           </div>
-        )}
 
         {/* Form panel */}
         <div
           style={{
             width: '100%',
-            maxWidth: submitted ? '500px' : '380px',
+            maxWidth: '380px',
             background: 'rgba(15,23,42,0.9)',
             border: '1px solid rgba(59,130,246,0.25)',
             borderRadius: '14px',
-            padding: submitted ? '48px 36px' : '28px',
+            padding: '28px',
             boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
             transition: 'all 0.3s ease',
           }}
         >
-          {submitted ? (
-            <div style={{ textAlign: 'center', animation: 'fadeIn 0.4s ease', padding: '30px 0' }}>
-              {/* Blue circle with checkmark */}
+          {showSuccessModal && (
+            <div
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(0,0,0,0.6)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 9999,
+                animation: 'fadeIn 0.3s ease',
+              }}
+            >
               <div
                 style={{
-                  width: '120px',
-                  height: '120px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 28px',
-                  boxShadow: '0 4px 20px rgba(59,130,246,0.4)',
-                  animation: 'checkPop 0.5s ease forwards',
+                  background: 'rgba(15,23,42,0.95)',
+                  border: '1px solid rgba(59,130,246,0.3)',
+                  borderRadius: '14px',
+                  padding: '48px 36px',
+                  textAlign: 'center',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
                 }}
               >
-                <svg
-                  width="60"
-                  height="60"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#fff"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                <div
+                  style={{
+                    width: '120px',
+                    height: '120px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 28px',
+                    boxShadow: '0 4px 20px rgba(59,130,246,0.4)',
+                    animation: 'checkPop 0.5s ease forwards',
+                  }}
                 >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
+                  <svg
+                    width="60"
+                    height="60"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#fff"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'VT323, monospace',
+                    fontSize: '42px',
+                    color: '#3b82f6',
+                    letterSpacing: '8px',
+                  }}
+                >
+                  LISTO
+                </div>
               </div>
-              <div
-                style={{
-                  fontFamily: 'VT323, monospace',
-                  fontSize: '42px',
-                  color: '#3b82f6',
-                  letterSpacing: '8px',
-                  marginBottom: '36px',
-                }}
-              >
-                DONE
-              </div>
-              <button
-                className="submit-btn"
-                style={{ fontSize: '26px', padding: '18px' }}
-                onClick={() => {
-                  setSubmitted(false)
-                  setCardNumber('')
-                  setExpiry('')
-                  setCvv('')
-                  setLuhnValid(null)
-                  setExpiryError('')
-                }}
-              >
-                REGRESAR
-              </button>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit}>
+          )}
+          {/* Form always visible */}
+          <form onSubmit={handleSubmit}>
               <div
                 style={{
                   fontFamily: 'VT323, monospace',
@@ -379,18 +393,6 @@ export default function PhishingDemo() {
                     </div>
                   )}
                 </div>
-                <div style={{ flex: 1 }}>
-                  <label className="field-label">CVV</label>
-                  <input
-                    className="field-input"
-                    type="text"
-                    inputMode="numeric"
-                    placeholder="•••"
-                    value={cvv}
-                    onChange={e => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                    maxLength={4}
-                  />
-                </div>
               </div>
 
               <button
@@ -414,7 +416,6 @@ export default function PhishingDemo() {
                 256-BIT ENCRYPTED · SECURE NETWORK
               </div>
             </form>
-          )}
         </div>
 
       </div>
