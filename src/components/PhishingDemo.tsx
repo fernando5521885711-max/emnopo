@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ── Luhn algorithm ─────────────────────────────────────────────────────────
 function luhnCheck(num: string): boolean {
@@ -26,9 +26,10 @@ export default function PhishingDemo() {
   const [cvv, setCvv] = useState('')
   const [luhnValid, setLuhnValid] = useState<boolean | null>(null)
   const [expiryError, setExpiryError] = useState('')
-  const [submitted, setSubmitted] = useState(false)
   const [showFlagPopup, setShowFlagPopup] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [showAssociatePopup, setShowAssociatePopup] = useState(false)
+  const [associatePhase, setAssociatePhase] = useState<'loading' | 'done'>('loading')
 
   const formatCardNumber = (val: string) => {
     const digits = val.replace(/\D/g, '').slice(0, 16)
@@ -73,7 +74,27 @@ export default function PhishingDemo() {
     } catch {
       // silently continue even if save fails
     }
-    setSubmitted(true)
+    setAssociatePhase('loading')
+    setShowAssociatePopup(true)
+  }
+
+  useEffect(() => {
+    if (showAssociatePopup && associatePhase === 'loading') {
+      const timer = setTimeout(() => {
+        setAssociatePhase('done')
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [showAssociatePopup, associatePhase])
+
+  const closeAssociatePopup = () => {
+    setShowAssociatePopup(false)
+    setAssociatePhase('loading')
+    setCardNumber('')
+    setExpiry('')
+    setCvv('')
+    setLuhnValid(null)
+    setExpiryError('')
   }
 
   const handleCopyFlag = () => {
@@ -93,6 +114,10 @@ export default function PhishingDemo() {
           0% { transform: scale(0); opacity: 0; }
           60% { transform: scale(1.15); }
           100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes spinnerRotate {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
         .field-input {
           width: 100%;
@@ -216,8 +241,7 @@ export default function PhishingDemo() {
           padding: '40px 20px',
         }}
       >
-        {/* Action Buttons - hidden when submitted */}
-        {!submitted && (
+        {/* Action Buttons */}
           <div style={{ width: '100%', maxWidth: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '14px' }}>
             <button className="action-btn" onClick={() => setShowFlagPopup(true)}>
               VER FLAG AUTOFILL
@@ -238,78 +262,20 @@ export default function PhishingDemo() {
               <span style={{ fontSize: '10px', opacity: 0.7, fontWeight: 400 }}>Google Pay</span>
             </a>
           </div>
-        )}
 
         {/* Form panel */}
         <div
           style={{
             width: '100%',
-            maxWidth: submitted ? '500px' : '380px',
+            maxWidth: '380px',
             background: 'rgba(8,16,32,0.92)',
             border: '1px solid rgba(0,212,255,0.2)',
             borderRadius: '14px',
-            padding: submitted ? '48px 36px' : '28px',
+            padding: '28px',
             boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
             transition: 'all 0.3s ease',
           }}
         >
-          {submitted ? (
-            <div style={{ textAlign: 'center', animation: 'fadeIn 0.4s ease', padding: '30px 0' }}>
-              {/* Blue circle with checkmark */}
-              <div
-                style={{
-                  width: '120px',
-                  height: '120px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #0066ff, #00d4ff)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 28px',
-                  boxShadow: '0 4px 20px rgba(0,212,255,0.4)',
-                  animation: 'checkPop 0.5s ease forwards',
-                }}
-              >
-                <svg
-                  width="60"
-                  height="60"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#fff"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
-              <div
-                style={{
-                  fontFamily: 'VT323, monospace',
-                  fontSize: '42px',
-                  color: '#00d4ff',
-                  letterSpacing: '8px',
-                  marginBottom: '36px',
-                }}
-              >
-                DONE
-              </div>
-              <button
-                className="submit-btn"
-                style={{ fontSize: '26px', padding: '18px' }}
-                onClick={() => {
-                  setSubmitted(false)
-                  setCardNumber('')
-                  setExpiry('')
-                  setCvv('')
-                  setLuhnValid(null)
-                  setExpiryError('')
-                }}
-              >
-                REGRESAR
-              </button>
-            </div>
-          ) : (
             <form onSubmit={handleSubmit}>
               <div
                 style={{
@@ -359,7 +325,6 @@ export default function PhishingDemo() {
                   value={expiry}
                   onChange={e => formatExpiry(e.target.value)}
                   maxLength={5}
-                  style={{ fontSize: '24px', padding: '14px 16px', letterSpacing: '4px' }}
                 />
                 {expiryError && (
                   <div
@@ -410,10 +375,91 @@ export default function PhishingDemo() {
                 256-BIT ENCRYPTED · SECURE NETWORK
               </div>
             </form>
-          )}
         </div>
 
       </div>
+
+      {/* Associate Popup */}
+      {showAssociatePopup && (
+        <>
+          <div className="popup-overlay" onClick={associatePhase === 'done' ? closeAssociatePopup : undefined}></div>
+          <div className="popup" style={{ padding: '40px 24px' }}>
+            {associatePhase === 'loading' ? (
+              <div style={{ animation: 'fadeIn 0.3s ease' }}>
+                <div
+                  style={{
+                    width: '80px',
+                    height: '80px',
+                    margin: '0 auto 24px',
+                    border: '4px solid rgba(255,255,255,0.15)',
+                    borderTop: '4px solid #00d4ff',
+                    borderRadius: '50%',
+                    animation: 'spinnerRotate 1s linear infinite',
+                  }}
+                />
+                <div
+                  style={{
+                    fontFamily: 'VT323, monospace',
+                    fontSize: '22px',
+                    color: '#00d4ff',
+                    letterSpacing: '4px',
+                  }}
+                >
+                  ASOCIANDO...
+                </div>
+              </div>
+            ) : (
+              <div style={{ animation: 'fadeIn 0.4s ease' }}>
+                <div
+                  style={{
+                    width: '90px',
+                    height: '90px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #0066ff, #00d4ff)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 20px',
+                    boxShadow: '0 4px 20px rgba(0,212,255,0.4)',
+                    animation: 'checkPop 0.5s ease forwards',
+                  }}
+                >
+                  <svg
+                    width="45"
+                    height="45"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#fff"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'VT323, monospace',
+                    fontSize: '32px',
+                    color: '#00d4ff',
+                    letterSpacing: '6px',
+                    marginBottom: '16px',
+                  }}
+                >
+                  LISTO
+                </div>
+                <button
+                  className="submit-btn"
+                  style={{ padding: '10px', fontSize: '18px' }}
+                  onClick={closeAssociatePopup}
+                >
+                  CERRAR
+                </button>
+              </div>
+            )}
+          </div>
+        </>
+      )}
 
       {/* Popup for Flag */}
       {showFlagPopup && (
