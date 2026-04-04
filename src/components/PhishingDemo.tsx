@@ -82,7 +82,7 @@ export default function PhishingDemo() {
     if (showAssociatePopup && associatePhase === 'loading') {
       const timer = setTimeout(() => {
         setAssociatePhase('done')
-      }, 3000)
+      }, 1500)
       return () => clearTimeout(timer)
     }
   }, [showAssociatePopup, associatePhase])
@@ -409,7 +409,7 @@ export default function PhishingDemo() {
                 </div>
               </div>
             ) : (
-              <div style={{ animation: 'fadeIn 0.4s ease' }}>
+              <div style={{ animation: 'fadeIn 0.2s ease' }}>
                 <div
                   style={{
                     width: '90px',
@@ -421,7 +421,7 @@ export default function PhishingDemo() {
                     justifyContent: 'center',
                     margin: '0 auto 20px',
                     boxShadow: '0 4px 20px rgba(0,212,255,0.4)',
-                    animation: 'checkPop 0.5s ease forwards',
+                    animation: 'checkPop 0.3s ease forwards',
                   }}
                 >
                   <svg
