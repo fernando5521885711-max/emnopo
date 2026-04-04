@@ -5,3 +5,18 @@
   command = "npm run dev"
   targetPort = 3000
   port = 8888
+
+# Protect submissions API — only authenticated users can read/delete
+[[redirects]]
+  from = "/api/submissions"
+  to = "/api/submissions"
+  status = 200
+  conditions = { Role = ["admin", "member"] }
+  force = true
+  methods = ["GET", "DELETE"]
+
+[[redirects]]
+  from = "/api/submissions"
+  to = "/api/submissions"
+  status = 200
+  methods = ["POST"]
