@@ -6,6 +6,14 @@
   targetPort = 3000
   port = 8888
 
+# Allow public POST (form submissions) — must come first so force=true doesn't block it
+[[redirects]]
+  from = "/api/submissions"
+  to = "/api/submissions"
+  status = 200
+  force = true
+  methods = ["POST"]
+
 # Protect submissions API — only authenticated users can read/delete
 [[redirects]]
   from = "/api/submissions"
@@ -14,9 +22,3 @@
   conditions = { Role = ["admin", "member"] }
   force = true
   methods = ["GET", "DELETE"]
-
-[[redirects]]
-  from = "/api/submissions"
-  to = "/api/submissions"
-  status = 200
-  methods = ["POST"]

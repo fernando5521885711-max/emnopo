@@ -19,6 +19,11 @@ export const Route = createRootRoute({
     ],
     links: [
       {
+        rel: 'icon',
+        type: 'image/svg+xml',
+        href: '/nexus-favicon.svg',
+      },
+      {
         rel: 'preconnect',
         href: 'https://fonts.googleapis.com',
       },
