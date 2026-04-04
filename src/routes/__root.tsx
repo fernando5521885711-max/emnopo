@@ -37,12 +37,27 @@ export const Route = createRootRoute({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  // Inline script to redirect identity token hashes to /login before React hydrates
+  const identityRedirectScript = `
+    (function() {
+      var h = window.location.hash;
+      if (h && window.location.pathname === '/' &&
+          (h.indexOf('invite_token=') !== -1 ||
+           h.indexOf('recovery_token=') !== -1 ||
+           h.indexOf('confirmation_token=') !== -1 ||
+           h.indexOf('access_token=') !== -1)) {
+        window.location.replace('/login' + h);
+      }
+    })();
+  `;
+
   return (
     <html lang="en">
       <head>
         <HeadContent />
       </head>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: identityRedirectScript }} />
         {children}
         <Scripts />
       </body>

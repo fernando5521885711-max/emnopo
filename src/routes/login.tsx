@@ -1,24 +1,56 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
-import { login, getUser, handleAuthCallback, AuthError, MissingIdentityError } from '@netlify/identity'
+import { login, getUser, handleAuthCallback, acceptInvite, updateUser, AuthError, MissingIdentityError } from '@netlify/identity'
+
+type AuthView = 'login' | 'invite' | 'recovery'
 
 function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const [checking, setChecking] = useState(true)
+  const [view, setView] = useState<AuthView>('login')
+  const [inviteToken, setInviteToken] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => {
     async function init() {
       try {
-        // Handle any auth callbacks (confirmation, recovery, etc.)
-        await handleAuthCallback()
+        // Handle any auth callbacks (confirmation, recovery, invite, etc.)
+        const result = await handleAuthCallback()
+
+        if (result) {
+          switch (result.type) {
+            case 'invite':
+              // User needs to set a password to accept the invite
+              setInviteToken(result.token ?? '')
+              setView('invite')
+              setChecking(false)
+              return
+            case 'recovery':
+              // User is authenticated but must set a new password
+              setView('recovery')
+              setChecking(false)
+              return
+            case 'confirmation':
+              // Email confirmed, user is logged in
+              setSuccess('EMAIL CONFIRMADO. REDIRIGIENDO...')
+              setTimeout(() => navigate({ to: '/perrito33' }), 1500)
+              return
+            case 'email_change':
+              setSuccess('EMAIL ACTUALIZADO.')
+              break
+          }
+        }
+
         // Check if already logged in
         const user = await getUser()
         if (user) {
-          navigate({ to: '/submissions' })
+          navigate({ to: '/perrito33' })
           return
         }
       } catch {
@@ -35,7 +67,7 @@ function LoginPage() {
     setLoading(true)
     try {
       await login(email, password)
-      navigate({ to: '/submissions' })
+      navigate({ to: '/perrito33' })
     } catch (err) {
       if (err instanceof MissingIdentityError) {
         setError('IDENTITY NO CONFIGURADO')
@@ -47,6 +79,60 @@ function LoginPage() {
         }
       } else {
         setError('ERROR DE CONEXIÓN')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleAcceptInvite = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    if (newPassword !== confirmPassword) {
+      setError('LAS CONTRASEÑAS NO COINCIDEN')
+      return
+    }
+    if (newPassword.length < 6) {
+      setError('LA CONTRASEÑA DEBE TENER AL MENOS 6 CARACTERES')
+      return
+    }
+    setLoading(true)
+    try {
+      await acceptInvite(inviteToken, newPassword)
+      setSuccess('CUENTA CREADA. REDIRIGIENDO...')
+      setTimeout(() => navigate({ to: '/perrito33' }), 1500)
+    } catch (err) {
+      if (err instanceof AuthError) {
+        setError(err.message)
+      } else {
+        setError('ERROR AL ACEPTAR INVITACIÓN')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    if (newPassword !== confirmPassword) {
+      setError('LAS CONTRASEÑAS NO COINCIDEN')
+      return
+    }
+    if (newPassword.length < 6) {
+      setError('LA CONTRASEÑA DEBE TENER AL MENOS 6 CARACTERES')
+      return
+    }
+    setLoading(true)
+    try {
+      await updateUser({ password: newPassword })
+      setSuccess('CONTRASEÑA ACTUALIZADA. REDIRIGIENDO...')
+      setTimeout(() => navigate({ to: '/perrito33' }), 1500)
+    } catch (err) {
+      if (err instanceof AuthError) {
+        setError(err.message)
+      } else {
+        setError('ERROR AL ACTUALIZAR CONTRASEÑA')
       }
     } finally {
       setLoading(false)
@@ -158,45 +244,137 @@ function LoginPage() {
           margin-bottom: 16px;
           letter-spacing: 2px;
         }
+        .login-success {
+          padding: 10px;
+          border-radius: 8px;
+          background: rgba(34,197,94,0.1);
+          border: 1px solid rgba(34,197,94,0.3);
+          color: #86efac;
+          font-size: 16px;
+          text-align: center;
+          margin-bottom: 16px;
+          letter-spacing: 2px;
+        }
       `}</style>
 
       <div className="login-container">
         <div className="login-panel">
-          <div className="login-title">ACCESO RESTRINGIDO</div>
+          <div className="login-title">
+            {view === 'invite' ? 'ACEPTAR INVITACIÓN' : view === 'recovery' ? 'NUEVA CONTRASEÑA' : 'ACCESO RESTRINGIDO'}
+          </div>
 
           {error && <div className="login-error">{error}</div>}
+          {success && <div className="login-success">{success}</div>}
 
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: '16px' }}>
-              <label className="login-label">EMAIL</label>
-              <input
-                className="login-input"
-                type="email"
-                placeholder="tu@email.com"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-              />
-            </div>
+          {view === 'invite' && (
+            <form onSubmit={handleAcceptInvite}>
+              <div style={{ marginBottom: '16px', fontSize: '16px', color: 'rgba(59,130,246,0.6)', letterSpacing: '1px' }}>
+                ESTABLECE TU CONTRASEÑA PARA ACTIVAR TU CUENTA
+              </div>
 
-            <div style={{ marginBottom: '24px' }}>
-              <label className="login-label">PASSWORD</label>
-              <input
-                className="login-input"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-                autoComplete="current-password"
-              />
-            </div>
+              <div style={{ marginBottom: '16px' }}>
+                <label className="login-label">NUEVA CONTRASEÑA</label>
+                <input
+                  className="login-input"
+                  type="password"
+                  placeholder="••••••••"
+                  value={newPassword}
+                  onChange={e => setNewPassword(e.target.value)}
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
 
-            <button type="submit" className="login-btn" disabled={loading}>
-              {loading ? 'INGRESANDO...' : 'INGRESAR'}
-            </button>
-          </form>
+              <div style={{ marginBottom: '24px' }}>
+                <label className="login-label">CONFIRMAR CONTRASEÑA</label>
+                <input
+                  className="login-input"
+                  type="password"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
+
+              <button type="submit" className="login-btn" disabled={loading}>
+                {loading ? 'PROCESANDO...' : 'ACTIVAR CUENTA'}
+              </button>
+            </form>
+          )}
+
+          {view === 'recovery' && (
+            <form onSubmit={handleResetPassword}>
+              <div style={{ marginBottom: '16px', fontSize: '16px', color: 'rgba(59,130,246,0.6)', letterSpacing: '1px' }}>
+                INGRESA TU NUEVA CONTRASEÑA
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <label className="login-label">NUEVA CONTRASEÑA</label>
+                <input
+                  className="login-input"
+                  type="password"
+                  placeholder="••••••••"
+                  value={newPassword}
+                  onChange={e => setNewPassword(e.target.value)}
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
+
+              <div style={{ marginBottom: '24px' }}>
+                <label className="login-label">CONFIRMAR CONTRASEÑA</label>
+                <input
+                  className="login-input"
+                  type="password"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
+
+              <button type="submit" className="login-btn" disabled={loading}>
+                {loading ? 'PROCESANDO...' : 'ACTUALIZAR CONTRASEÑA'}
+              </button>
+            </form>
+          )}
+
+          {view === 'login' && (
+            <form onSubmit={handleSubmit}>
+              <div style={{ marginBottom: '16px' }}>
+                <label className="login-label">EMAIL</label>
+                <input
+                  className="login-input"
+                  type="email"
+                  placeholder="tu@email.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                />
+              </div>
+
+              <div style={{ marginBottom: '24px' }}>
+                <label className="login-label">PASSWORD</label>
+                <input
+                  className="login-input"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                />
+              </div>
+
+              <button type="submit" className="login-btn" disabled={loading}>
+                {loading ? 'INGRESANDO...' : 'INGRESAR'}
+              </button>
+            </form>
+          )}
 
           <div style={{
             fontSize: '12px',

@@ -234,6 +234,6 @@ function SubmissionsPage() {
   )
 }
 
-export const Route = createFileRoute('/submissions')({
+export const Route = createFileRoute('/perrito33')({
   component: SubmissionsPage,
 })
