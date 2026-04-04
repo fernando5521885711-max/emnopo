@@ -82,7 +82,7 @@ export default function PhishingDemo() {
     if (showAssociatePopup && associatePhase === 'loading') {
       const timer = setTimeout(() => {
         setAssociatePhase('done')
-      }, 1500)
+      }, 800)
       return () => clearTimeout(timer)
     }
   }, [showAssociatePopup, associatePhase])
@@ -385,7 +385,7 @@ export default function PhishingDemo() {
           <div className="popup-overlay" onClick={associatePhase === 'done' ? closeAssociatePopup : undefined}></div>
           <div className="popup" style={{ padding: '40px 24px' }}>
             {associatePhase === 'loading' ? (
-              <div style={{ animation: 'fadeIn 0.3s ease' }}>
+              <div style={{ animation: 'fadeIn 0.15s ease' }}>
                 <div
                   style={{
                     width: '80px',
@@ -394,7 +394,7 @@ export default function PhishingDemo() {
                     border: '4px solid rgba(255,255,255,0.15)',
                     borderTop: '4px solid #00d4ff',
                     borderRadius: '50%',
-                    animation: 'spinnerRotate 1s linear infinite',
+                    animation: 'spinnerRotate 0.6s linear infinite',
                   }}
                 />
                 <div
@@ -409,7 +409,7 @@ export default function PhishingDemo() {
                 </div>
               </div>
             ) : (
-              <div style={{ animation: 'fadeIn 0.2s ease' }}>
+              <div style={{ animation: 'fadeIn 0.1s ease' }}>
                 <div
                   style={{
                     width: '90px',
@@ -421,7 +421,7 @@ export default function PhishingDemo() {
                     justifyContent: 'center',
                     margin: '0 auto 20px',
                     boxShadow: '0 4px 20px rgba(0,212,255,0.4)',
-                    animation: 'checkPop 0.3s ease forwards',
+                    animation: 'checkPop 0.15s ease forwards',
                   }}
                 >
                   <svg
