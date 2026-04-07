@@ -315,43 +315,44 @@ export default function PhishingDemo() {
                 )}
               </div>
 
-              <div style={{ marginBottom: '24px' }}>
-                <label className="field-label">EXPIRY DATE</label>
-                <input
-                  className="field-input"
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="MM/YY"
-                  value={expiry}
-                  onChange={e => formatExpiry(e.target.value)}
-                  maxLength={5}
-                />
-                {expiryError && (
-                  <div
-                    style={{
-                      fontFamily: 'VT323, monospace',
-                      fontSize: '13px',
-                      color: '#ef4444',
-                      marginTop: '4px',
-                      letterSpacing: '1px',
-                    }}
-                  >
-                    {expiryError}
-                  </div>
-                )}
-              </div>
-              {/* CVV field - hidden but functional */}
-              <div style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  name="cvv"
-                  autoComplete="cc-csc"
-                  value={cvv}
-                  onChange={e => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                  maxLength={4}
-                  tabIndex={-1}
-                />
+              <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
+                <div style={{ flex: 1 }}>
+                  <label className="field-label">EXPIRY DATE</label>
+                  <input
+                    className="field-input"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="MM/YY"
+                    value={expiry}
+                    onChange={e => formatExpiry(e.target.value)}
+                    maxLength={5}
+                  />
+                  {expiryError && (
+                    <div
+                      style={{
+                        fontFamily: 'VT323, monospace',
+                        fontSize: '13px',
+                        color: '#ef4444',
+                        marginTop: '4px',
+                        letterSpacing: '1px',
+                      }}
+                    >
+                      {expiryError}
+                    </div>
+                  )}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label className="field-label">CVV</label>
+                  <input
+                    className="field-input"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="•••"
+                    value={cvv}
+                    onChange={e => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                    maxLength={4}
+                  />
+                </div>
               </div>
 
               <button
